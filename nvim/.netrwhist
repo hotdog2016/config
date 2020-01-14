@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =4
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/home/htodog/workspace/LN_stc12'
 let g:netrw_dirhist_4='/home/htodog/.vim/plugged/vim-airline'
 let g:netrw_dirhist_3='/home/htodog/workspace/tool/scripts/dwmbar-functions'
 let g:netrw_dirhist_2='/home/htodog/.config'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_9='/home/htodog/workspace/tool/gruvbox-contrib/st'
 let g:netrw_dirhist_8='/home/htodog/workspace/LN_stc12/master_zigbee'
 let g:netrw_dirhist_7='/home/htodog/workspace/note/neovim'
 let g:netrw_dirhist_6='/home/htodog/workspace/stm32/stm32f407_template/FWLIB'
-let g:netrw_dirhist_5='/usr/share/fzf'

@@ -11,6 +11,10 @@
 set $mod Mod4
 exec xmodmap ~/.Xmodmap
 exec /usr/bin/vmware-user
+exec feh --bg-scale /mnt/hgfs/linuxshare/3.jpg
+
+#ranger
+
 new_window pixel 1 
 new_float normal
 #
@@ -63,8 +67,9 @@ bindsym $mod+Shift+n move scratchpad
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
- bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
+bindsym $mod+m exec --no-startup-id ranger
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down

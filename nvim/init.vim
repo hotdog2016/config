@@ -1,10 +1,9 @@
 " map"{{{
 let mapleader = " "
-nnoremap \p 1<C-G>
+nnoremap <leader>p 1<C-G>
 nnoremap <F4> :g/^\s*$/d<CR> 
 nnoremap <leader>e $
 nnoremap <leader>a 0
-
 vnoremap <leader>e $
 vnoremap <leader>a 0
 
@@ -51,10 +50,10 @@ noremap <leader>j <C-w>j
 noremap <leader>h <C-w>h
 noremap <leader>l <C-w>l
 
-map <M-j> :res +5<CR>
-map <M-k> :res -5<CR>
-map <M-h> :vertical resize-5<CR>
-map <M-l> :vertical resize+5<CR>
+map <M-down> :res +5<CR>
+map <M-up> :res -5<CR>
+map <M-left> :vertical resize-5<CR>
+map <M-right> :vertical resize+5<CR>
 "}}}
 
 " {{{ Markdown Settings
@@ -73,7 +72,7 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 
 
 set cursorline
-set nu                         "set numb of line
+set nu
 set relativenumber
 set viminfo+=!                 "保存全局变量
 set iskeyword+=_,$,@,%,#,-     "带有如下符号的单词不要被换行分割
@@ -95,7 +94,7 @@ set cmdheight=1                "CmdLine is following one line of StatusLine
 set scrolloff=4                "If cursor achive bottom ,it will keep '4' lines with StatusLine
 set noexpandtab                "No use space replace Tab
 set ts=4
-set hidden    		       "about undo
+set hidden					   "about undo
 "=============================Backup
 set backup
 set backupext=.bak
@@ -200,9 +199,9 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#ctrlspace#enabled = 1
 let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
 let g:airline#extensions#branch#enabled = 0
-let g:airline_section_c = airline#section#create(['%{getcwd()}/%t'])
+let g:airline_section_c = airline#section#create(['readonly',' ','%{getcwd()}/%t'])
 let g:airline_section_y = airline#section#create([''])
-let g:airline_section_z = airline#section#create (['%3p%%', ' ','%L' , '%3v'])
+let g:airline_section_z = airline#section#create (['%l',',','%L' , '%3v'])
 "let g:airline#extensions#branch#empty_message = ''
 "let g:airline#extensions#branch#displayed_head_limit = 10
 "let g:airline#extensions#branch#format = 2
@@ -255,7 +254,7 @@ nnoremap <silent><Leader>f :Files<CR>
 "调用Rg进行搜索，包含隐藏文件
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \ 'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \ 'rg --column --line-number --no-heading --color=always -g "!cscope.*" --smart-case '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
@@ -314,13 +313,14 @@ let g:ycm_semantic_triggers =  {
 " Vista.vim{{{
 noremap <leader>v :Vista!!<CR>
 noremap <silent><C-t> :Vista finder<CR>
-"function! NearestMethodOrFunction() abort
-"	return get(b:, 'vista_nearest_method_or_function', '')
-"endfunction
-""set statusline+=%{NearestMethodOrFunction()}
+function! NearestMethodOrFunction() abort
+	return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+set statusline+=%{NearestMethodOrFunction()}
 "autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 " e.g., more compact: ["▸ ", ""]
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista#renderer#enable_icon = 0
 "let g:vista_default_executive = 'ctags'
 " To enable fzf's preview window set g:vista_fzf_preview.
 " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
@@ -435,16 +435,20 @@ nmap <leader><leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
 nmap <leader><leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 nmap <leader><leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
 
-if has("cscope")
-	set csprg=/usr/bin/cscope
-	set csto=0
-	set cst
-	" add any database in current directory
-	if filereadable("cscope.out")
-	    silent cs add cscope.out
-	" else add database pointed to by environment
-	elseif $CSCOPE_DB != ""
-	    silent cs add $CSCOPE_DB
+if cscope_connection()==0
+	if has("cscope")
+		set csprg=/usr/bin/cscope
+		set csto=0
+		set cst
+		let g:prjroot = finddir('.rootdir','.;')
+		let $CSCOPE_OUT=prjroot."/cscope/cscope.out"
+		" add any database in current directory
+		if filereadable($CSCOPE_OUT)
+		    silent cs add $CSCOPE_OUT
+		" else add database pointed to by environment
+		elseif $CSCOPE_DB != ""
+		    silent cs add $CSCOPE_DB
+		endif
 	endif
 endif
 "}}}
