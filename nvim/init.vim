@@ -50,6 +50,11 @@ noremap <leader>j <C-w>j
 noremap <leader>h <C-w>h
 noremap <leader>l <C-w>l
 
+map <M-j> 5j
+map <M-k> 5k
+map <M-h> 5h
+map <M-l> 5l
+
 map <M-down> :res +5<CR>
 map <M-up> :res -5<CR>
 map <M-left> :vertical resize-5<CR>
@@ -133,7 +138,7 @@ call plug#begin('~/.vim/plugged')
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 " Multiple Plug commands can be written in a single line using | separators
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'wannesm/wmgraphviz.vim'
 Plug 'bling/vim-airline'
 Plug 'easymotion/vim-easymotion'
@@ -142,6 +147,8 @@ Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'junegunn/fzf.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
+
+Plug 'vimwiki/vimwiki'
 
 "colorschem
 Plug 'taniarascia/new-moon.vim'
@@ -169,6 +176,14 @@ Plug 'honza/vim-snippets'
 Plug 'mbbill/undotree'
 "Snippets"
 Plug 'mhinz/vim-startify'
+"coc"
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+"multiple cursors"
+Plug 'terryma/vim-multiple-cursors'
+"surround"
+Plug 'tpope/vim-surround'
+Plug 'MattesGroeger/vim-bookmarks'
 
 "Plug 'yianwillis/vimcdoc'
 "PlugInstall 	Install plugins
@@ -197,6 +212,7 @@ let g:airline_theme="gruvbox"
 let g:airline_symbols_ascii=1
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#ctrlspace#enabled = 1
+let g:airline#extensions#coc#enabled =0
 let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
 let g:airline#extensions#branch#enabled = 0
 let g:airline_section_c = airline#section#create(['readonly',' ','%{getcwd()}/%t'])
@@ -210,17 +226,17 @@ let g:airline_section_z = airline#section#create (['%l',',','%L' , '%3v'])
 "}}}
 
 "nerdtree"{{{
-nmap <leader><leader>nt :NERDTreeToggle<CR>
-let NERDChristmasTree=1
-let NERDTreeWinSize=30
-let NERDTreeChDirMode=2
-let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
-let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
-let NERDTreeShowBookmarks=1
-let NERDTreeAutoDeleteBuffer=1
-let NERDTreeDirArrowExpandable=">"
-let NERDTreeDirArrowCollapsible="v"
-let NERDTreeWinPos = "left"
+"nmap <leader><leader>nt :NERDTreeToggle<CR>
+"let NERDChristmasTree=1
+"let NERDTreeWinSize=30
+"let NERDTreeChDirMode=2
+"let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
+"let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
+"let NERDTreeShowBookmarks=1
+"let NERDTreeAutoDeleteBuffer=1
+"let NERDTreeDirArrowExpandable=">"
+"let NERDTreeDirArrowCollapsible="v"
+"let NERDTreeWinPos = "left"
 "}}}
 
 "wmgrahviz"{{{
@@ -280,7 +296,7 @@ let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 " YouCompleteMe"{{{
 let g:ycm_python_binary_path  = '/usr/bin/python3.7'
 let g:ycm_use_clangd = 0
-let g:ycm_auto_trigger = 1
+let g:ycm_auto_trigger = 0
 let g:ycm_key_invoke_completion = '<C-n>'
 let g:ycm_server_keep_logfiles = 1
 let g:ycm_collect_identifiers_from_tags_files=1
@@ -377,19 +393,12 @@ let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
 "}}}
-map <leader>u :UndotreeToggle<CR>
-let g:undotree_DiffAutoOpen = 1
-let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_ShortIndicators = 1
-"{{{
-
-"}}}
 "Ctrlspace{{{
 let g:CtrlSpaceDefaultMappingKey = "<leader>c"
 let g:CtrlSpaceUseUnicode = 0
 "}}}
 
-"##### auto fcitx  ###########
+"{{{##### auto fcitx  ###########
 let g:input_toggle = 1
 function! Fcitx2en()
    let s:input_status = system("fcitx-remote")
@@ -412,7 +421,7 @@ set ttimeoutlen=150
 autocmd InsertLeave * call Fcitx2en()
 "进入插入模式
 "autocmd InsertEnter * call Fcitx2zh()
-"##### auto fcitx end ######
+"}}}##### auto fcitx end ######
 "{{{cscope config 
 
 "<leader><leader>a: Find assignments to this symbol
@@ -451,4 +460,48 @@ if cscope_connection()==0
 		endif
 	endif
 endif
+"}}}
+"
+"{{{ coc
+" Give more space for displaying messages.
+"set cmdheight=2
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+" Always show the signcolumn, otherwise it would shift the text each time
+"" diagnostics appear/become resolved.
+""set signcolumn=yes
+
+let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-gitignore', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter', 'coc-todolist']
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+nmap <leader>nt :CocCommand explorer<CR>
+
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
+
+nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<cr>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+"}}}
+"
+"{{{ multiple cursors
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-N>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
 "}}}
