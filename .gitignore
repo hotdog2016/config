@@ -27,3 +27,4 @@ vlc
 nvim/.bakup
 nvim/tmp
 *.un~
+coc
