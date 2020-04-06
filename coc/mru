@@ -1,3 +1,4 @@
+/home/htodog/.config/nvim/init.vim
 /home/htodog/vimwiki/index.wiki
 /home/htodog/vimwiki/git_error.wiki
 /home/htodog/vimwiki/git_cmd.wiki
@@ -23,7 +24,6 @@
 /home/htodog/vimwiki/vim.wiki
 /home/htodog/.config/nvim/coc-settings.json
 /home/htodog/workspace/C/bishi/13/test_13_1.c
-/home/htodog/.config/nvim/init.vim
 /home/htodog/workspace/C/bishi/14/test_14_1.c
 /home/htodog/workspace/C/bishi/15/test_15_1.c
 /home/htodog/workspace/digitalbook/input/inputmanager_thread.c
