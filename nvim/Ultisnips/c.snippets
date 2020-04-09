@@ -4,6 +4,12 @@
 
 priority -50
 
+
+snippet ifnull "if point is null"
+if ( NULL == $1 )
+	return $2;
+endsnippet
+
 snippet def "#define ..."
 #define $1
 endsnippet

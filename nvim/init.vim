@@ -145,7 +145,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'junegunn/fzf.vim'
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
 
 Plug 'vimwiki/vimwiki'
@@ -184,6 +184,10 @@ Plug 'terryma/vim-multiple-cursors'
 "surround"
 Plug 'tpope/vim-surround'
 Plug 'MattesGroeger/vim-bookmarks'
+
+"autoformat"
+Plug 'Chiel92/vim-autoformat'
+
 
 "Plug 'yianwillis/vimcdoc'
 "PlugInstall 	Install plugins
@@ -294,37 +298,37 @@ let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 "========}}}
 
 " YouCompleteMe"{{{
-let g:ycm_python_binary_path  = '/usr/bin/python3.7'
-let g:ycm_use_clangd = 0
-let g:ycm_auto_trigger = 0
-let g:ycm_key_invoke_completion = '<C-n>'
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_server_log_level = 'debug'
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_global_ycm_extra_conf = '~/' 
-let g:ycm_collect_identifiers_from_tag_files = 1  
-let g:ycm_min_num_of_chars_for_completion=4
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
-let g:ycm_complete_in_comments = 1  "在注释输入中也能补全
-let g:ycm_complete_in_strings = 1   "在字符串输入中也能补全
-let g:ycm_use_ultisnips_completer = 1 "提示UltiSnips
-let g:ycm_cache_omnifunc = 0        " 禁止缓存匹配项,每次都重新生成匹配项
-"注释和字符串中的文字也会被收入补全
-let g:ycm_collect_identifiers_from_comments_and_strings = 0   
-let g:ycm_seed_identifiers_with_syntax = 0
-let g:ycm_enable_diagnostic_signs = 0
-let g:ycm_enable_diagnostic_highlighting = 0
-let g:ycm_error_symbol = '>>'
-let g:ycm_warning_symbol = '>*'
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-  \ }
-"""}}}
+"let g:ycm_python_binary_path  = '/usr/bin/python3.7'
+"let g:ycm_use_clangd = 0
+"let g:ycm_auto_trigger = 0
+"let g:ycm_key_invoke_completion = '<C-n>'
+"let g:ycm_server_keep_logfiles = 1
+"let g:ycm_collect_identifiers_from_tags_files=1
+"let g:ycm_server_log_level = 'debug'
+"let g:ycm_confirm_extra_conf = 0
+"let g:ycm_global_ycm_extra_conf = '~/' 
+"let g:ycm_collect_identifiers_from_tag_files = 1  
+"let g:ycm_min_num_of_chars_for_completion=4
+"let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
+"let g:ycm_complete_in_comments = 1  "在注释输入中也能补全
+"let g:ycm_complete_in_strings = 1   "在字符串输入中也能补全
+"let g:ycm_use_ultisnips_completer = 1 "提示UltiSnips
+"let g:ycm_cache_omnifunc = 0        " 禁止缓存匹配项,每次都重新生成匹配项
+""注释和字符串中的文字也会被收入补全
+"let g:ycm_collect_identifiers_from_comments_and_strings = 0   
+"let g:ycm_seed_identifiers_with_syntax = 0
+"let g:ycm_enable_diagnostic_signs = 0
+"let g:ycm_enable_diagnostic_highlighting = 0
+"let g:ycm_error_symbol = '>>'
+"let g:ycm_warning_symbol = '>*'
+"let g:ycm_add_preview_to_completeopt = 0
+"let g:ycm_semantic_triggers =  {
+"  \   'c' : ['->', '.'],
+"  \   'cpp,objcpp' : ['->', '.', '::'],
+"  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+"  \ }
+""""}}}
 
 " Vista.vim{{{
 noremap <leader>v :Vista!!<CR>
@@ -361,12 +365,19 @@ let g:EasyMotion_smartcase = 1
 map f <Plug>(easymotion-bd-f)
 nmap f <Plug>(easymotion-overwin-f)
 "}}}
-
+"inoremap <M-e> <nop>
 "  Ultisnips{{{
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-e>"
-let g:UltiSnipsJumpBackwardTrigger="<c-n>"
+let g:UltiSnipsExpandTrigger="<TAB>"
+let g:UltiSnipsJumpForwardTrigger="<TAB>"
+let g:UltiSnipsJumpBackwardTrigger="<S-TAB>"
 let g:UltiSnipsSnippetDirectories = [$HOME."/.config/nvim/Ultisnips/" ]
+
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
+" Solve extreme insert-mode lag on macOS (by disabling autotrigger)
+augroup ultisnips_no_auto_expansion
+    au!
+    au VimEnter * au! UltiSnips_AutoTrigger
+augroup END
 "}}}
 "  MarkdownPreview {{{
 imap  <silent> <F8> <Plug>:MarkdownPreview<CR>
@@ -475,7 +486,23 @@ set shortmess+=c
 ""set signcolumn=yes
 
 let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-gitignore', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter', 'coc-todolist']
+
 inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]	=~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+	\ pumvisible() ? "\<C-n>" :
+	\ <SID>check_back_space() ? "\<TAB>" :
+	\ coc#refresh()
+
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -496,12 +523,15 @@ nmap <leader>rn <Plug>(coc-rename)
 "
 "{{{ multiple cursors
 let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_start_word_key      = '<C-f>'
 let g:multi_cursor_select_all_word_key = '<A-n>'
-let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_start_key           = 'g<C-f>'
 let g:multi_cursor_select_all_key      = 'g<A-n>'
-let g:multi_cursor_next_key            = '<C-n>'
-let g:multi_cursor_prev_key            = '<C-N>'
+let g:multi_cursor_next_key            = '<C-f>'
+let g:multi_cursor_prev_key            = '<C-b>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
+"}}}
+"{{{ autoformat"
+let g:formatterpath = [ '/usr/sbin' ]
 "}}}
