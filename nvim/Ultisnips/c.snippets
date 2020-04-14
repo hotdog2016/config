@@ -6,8 +6,10 @@ priority -50
 
 
 snippet ifnull "if point is null"
-if ( NULL == $1 )
-	return $2;
+if ( NULL == $1 ) {
+	printf("$1 is null\n");
+	return $3;
+}
 endsnippet
 
 snippet def "#define ..."

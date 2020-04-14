@@ -7,9 +7,10 @@ nnoremap <leader>a 0
 vnoremap <leader>e $
 vnoremap <leader>a 0
 
+
 nnoremap <leader>i :set ic<CR>
 nnoremap <leader>I :set noic<CR>
-
+omapclear
 nmap <leader><leader>y "+y
 nmap <leader><leader>p "+p
 nmap <leader>r :source ~/.config/nvim/init.vim<CR> :AirlineRefresh<CR>
@@ -22,26 +23,25 @@ inoremap jk <Esc>
 
 nnoremap <leader>g %
 
-inoremap {} {}<Esc>i
-inoremap () ()<Esc>i
-inoremap [] []<Esc>i
-inoremap <> <><Esc>i
-inoremap "" ""<Esc>i
-inoremap '' ''<Esc>i
+"inoremap {} {}<Esc>i
+"inoremap () ()<Esc>i
+"inoremap [] []<Esc>i
+"inoremap <> <><Esc>i
+"inoremap "" ""<Esc>i
+"inoremap '' ''<Esc>i
 
 set pastetoggle=<F5>
-
 
 noremap <LEADER><CR> :nohlsearch<CR>
 
 " Disable the default s key
-noremap s <nop>
+"noremap s <nop>
 
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-noremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
-noremap sj :set splitbelow<CR>:split<CR>
-noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
-noremap sl :set splitright<CR>:vsplit<CR>
+noremap <silent> <leader>sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+noremap <silent> <leader>sj :set splitbelow<CR>:split<CR>
+noremap <silent> <leader>sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+noremap <silent> <leader>sl :set splitright<CR>:vsplit<CR>
 
 
 noremap <leader>w <C-w>w
@@ -188,6 +188,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 "autoformat"
 Plug 'Chiel92/vim-autoformat'
 
+Plug 'Raimondi/delimitMate'
 
 "Plug 'yianwillis/vimcdoc'
 "PlugInstall 	Install plugins
@@ -216,7 +217,7 @@ let g:airline_theme="gruvbox"
 let g:airline_symbols_ascii=1
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#ctrlspace#enabled = 1
-let g:airline#extensions#coc#enabled =0
+let g:airline#extensions#coc#enabled =1
 let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
 let g:airline#extensions#branch#enabled = 0
 let g:airline_section_c = airline#section#create(['readonly',' ','%{getcwd()}/%t'])
@@ -265,19 +266,16 @@ nmap <Leader>lv :w<CR>:GraphvizShow<CR>:!rm %<.svg
 " fzf{{{
 "<Leader>f在当前目录搜索文件
 nnoremap <silent><Leader>f :Files<CR>
-"<Leader>b切换Buffer中的文件
-"nnoremap <silent><Leader>b :Buffers<CR>
-""<Leader>p在当前所有加载的Buffer中搜索包含目标词的所有行，:BLines只在当前Buffer中搜索
-"nnoremap <silent><Leader>l :Lines<CR>
-""<Leader>h在Vim打开的历史文件中搜索，相当于是在MRU中搜索，:History：命令历史查找
-"nnoremap <silent><Leader>h :History<CR>
-"调用Rg进行搜索，包含隐藏文件
+
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \ 'rg --column --line-number --no-heading --color=always -g "!cscope.*" --smart-case '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+command! -bang ProjectFiles call fzf#vim#files(fnamemodify(finddir('.git','.;'),':p:h:h'), <bang>0)
+nnoremap <silent><Leader>fp :ProjectFiles<CR>
 
 let g:fzf_layout = { 'down': '~40%' }
 
@@ -362,23 +360,26 @@ let g:undotree_ShortIndicators = 1
 " {{{ vim-easymotion
 let g:EasyMotion_smartcase = 1
 " 'f{char} to move to {char}
-map f <Plug>(easymotion-bd-f)
-nmap f <Plug>(easymotion-overwin-f)
-"}}}
-"inoremap <M-e> <nop>
-"  Ultisnips{{{
-let g:UltiSnipsExpandTrigger="<TAB>"
-let g:UltiSnipsJumpForwardTrigger="<TAB>"
-let g:UltiSnipsJumpBackwardTrigger="<S-TAB>"
-let g:UltiSnipsSnippetDirectories = [$HOME."/.config/nvim/Ultisnips/" ]
 
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
-" Solve extreme insert-mode lag on macOS (by disabling autotrigger)
-augroup ultisnips_no_auto_expansion
-    au!
-    au VimEnter * au! UltiSnips_AutoTrigger
-augroup END
+
+nmap w <Plug>(easymotion-bd-wl)
+nmap f <Plug>(easymotion-bd-f2)
+
+
+
 "}}}
+"
+"  Ultisnips{{{
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/']
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
+
+
+
+""}}}
+"
 "  MarkdownPreview {{{
 imap  <silent> <F8> <Plug>:MarkdownPreview<CR>
 nmap  <silent> <F8> <Plug>MarkdownPreview<CR>
@@ -407,6 +408,9 @@ let g:mkdp_page_title = '「${name}」'
 "Ctrlspace{{{
 let g:CtrlSpaceDefaultMappingKey = "<leader>c"
 let g:CtrlSpaceUseUnicode = 0
+let g:CtrlSpaceProjectRootMarkers = [
+    \ ".git",
+    \ ]
 "}}}
 
 "{{{##### auto fcitx  ###########
@@ -485,7 +489,19 @@ set shortmess+=c
 "" diagnostics appear/become resolved.
 ""set signcolumn=yes
 
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-gitignore', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter', 'coc-todolist']
+let g:coc_global_extensions = [
+			\'coc-python'
+			\, 'coc-vimlsp'
+			\, 'coc-json'
+			\, 'coc-yank'
+			\, 'coc-gitignore'
+			\, 'coc-lists'
+			\, 'coc-git'
+			\, 'coc-explorer'
+			\, 'coc-pyright'
+			\, 'coc-translator'
+			\, 'coc-todolist'
+			\]
 
 inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
@@ -515,10 +531,25 @@ nmap ts <Plug>(coc-translator-p)
 
 nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<cr>
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> ge <Plug>(coc-declaration)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
+
+" coctodolist
+nnoremap <leader>tn :CocCommand todolist.create<CR>
+nnoremap <leader>tl :CocList todolist<CR>
+nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload<CR>
+" coc-tasks
+noremap <silent> T :CocList tasks<CR>
+
+nnoremap <silent><leader>cc   :CocList commands<CR>
+nnoremap <silent><leader>cd   :CocList diagnostics<CR>
+nnoremap <silent><leader>ce   :CocList extensions<CR>
+nnoremap <silent><leader>co   :CocList outline<CR>
+nnoremap <silent><leader>cs   :CocList symbols<CR>
+
 "}}}
 "
 "{{{ multiple cursors
@@ -534,4 +565,10 @@ let g:multi_cursor_quit_key            = '<Esc>'
 "}}}
 "{{{ autoformat"
 let g:formatterpath = [ '/usr/sbin' ]
+"}}}
+"{{{
+let delimitMate_matchpairs = "(:),[:],{:}"
+au FileType vim,c let b:delimitMate_matchpairs = "(:),[:],{:}"
+let delimitMate_expand_space = 1
+let delimitMate_expand_cr = 1
 "}}}
