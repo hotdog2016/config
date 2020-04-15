@@ -1,4 +1,6 @@
 " map"{{{
+let g:ProjectDir = fnamemodify(finddir('.git','.;'),':p:h:h') 
+
 let mapleader = " "
 nnoremap <leader>p 1<C-G>
 nnoremap <F4> :g/^\s*$/d<CR> 
@@ -66,6 +68,11 @@ map <M-right> :vertical resize+5<CR>
 source ~/.config/nvim/Ultisnips/md-snippets.vim
 " auto spell
 " }}}
+"{{{ vimwiki
+let g:vimwiki_text_ignore_newline = 0
+let g:vimwiki_list_ignore_newline = 0
+nnoremap F3 : VimwikiAll2HTML<cr>
+"}}}
 
 " Set""{{{
 syntax on                      "set syntax highlight
@@ -143,7 +150,7 @@ Plug 'wannesm/wmgraphviz.vim'
 Plug 'bling/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-ctrlspace/vim-ctrlspace'
+"Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'junegunn/fzf.vim'
 "Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
@@ -227,8 +234,8 @@ let g:airline_section_z = airline#section#create (['%l',',','%L' , '%3v'])
 "let g:airline#extensions#branch#displayed_head_limit = 10
 "let g:airline#extensions#branch#format = 2
 
-
 "}}}
+"
 
 "nerdtree"{{{
 "nmap <leader><leader>nt :NERDTreeToggle<CR>
@@ -368,16 +375,12 @@ nmap f <Plug>(easymotion-bd-f2)
 
 
 "}}}
-"
 "  Ultisnips{{{
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/']
 silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
-
-
-
 ""}}}
 "
 "  MarkdownPreview {{{
@@ -404,13 +407,6 @@ let g:mkdp_markdown_css = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
-"}}}
-"Ctrlspace{{{
-let g:CtrlSpaceDefaultMappingKey = "<leader>c"
-let g:CtrlSpaceUseUnicode = 0
-let g:CtrlSpaceProjectRootMarkers = [
-    \ ".git",
-    \ ]
 "}}}
 
 "{{{##### auto fcitx  ###########
@@ -458,6 +454,7 @@ nmap <leader><leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <leader><leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
 nmap <leader><leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 nmap <leader><leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
+
 
 if cscope_connection()==0
 	if has("cscope")
@@ -544,12 +541,14 @@ nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload
 " coc-tasks
 noremap <silent> T :CocList tasks<CR>
 
+nnoremap <silent><leader>cl   :CocList<CR>
 nnoremap <silent><leader>cc   :CocList commands<CR>
 nnoremap <silent><leader>cd   :CocList diagnostics<CR>
 nnoremap <silent><leader>ce   :CocList extensions<CR>
 nnoremap <silent><leader>co   :CocList outline<CR>
 nnoremap <silent><leader>cs   :CocList symbols<CR>
-
+nnoremap <silent><leader>cf   :CocList files<CR>
+nnoremap <silent><leader>cr   :CocListResume<CR>
 "}}}
 "
 "{{{ multiple cursors
@@ -566,9 +565,20 @@ let g:multi_cursor_quit_key            = '<Esc>'
 "{{{ autoformat"
 let g:formatterpath = [ '/usr/sbin' ]
 "}}}
-"{{{
+"delimitMate{{{
 let delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vim,c let b:delimitMate_matchpairs = "(:),[:],{:}"
 let delimitMate_expand_space = 1
 let delimitMate_expand_cr = 1
+"}}}
+"custom function{{{
+
+"change to project dir
+nmap <F2> :call ChangeToPrjDir()<cr>
+function! ChangeToPrjDir()
+	let dir = g:ProjectDir
+	execute ":cd  " .dir
+endfunction
+
+
 "}}}
