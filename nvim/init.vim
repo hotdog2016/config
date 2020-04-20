@@ -104,20 +104,20 @@ set confirm                    "If you do something vim will ask for you Y/N
 set pastetoggle=<f7>           "set paste toggle mode
 set cmdheight=1                "CmdLine is following one line of StatusLine
 set scrolloff=4                "If cursor achive bottom ,it will keep '4' lines with StatusLine
-set noexpandtab                "No use space replace Tab
-set ts=4
+
 set hidden					   "about undo
 "=============================Backup
 set backup
 set backupext=.bak
 set backupdir=~/.config/nvim/.bakup 
 "=============================Indent
-set autoindent
-set cindent
-set smartindent                 "set C files auto indent
-set softtabstop=4
-set tabstop=4
-set shiftwidth=4                "set tab width""""
+"set cindent
+set smartindent
+"set expandtab
+set ts=4
+set listchars=tab:>>
+
+autocmd FileType c,cpp set shiftwidth=2 | set expandtab
 
 "=============================Encode
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
@@ -196,6 +196,8 @@ Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Chiel92/vim-autoformat'
 
 Plug 'Raimondi/delimitMate'
+Plug 't9md/vim-choosewin'
+Plug 'voldikss/vim-floaterm'
 
 "Plug 'yianwillis/vimcdoc'
 "PlugInstall 	Install plugins
@@ -581,4 +583,13 @@ function! ChangeToPrjDir()
 endfunction
 
 
+"}}}
+"{{{ floaterm
+let g:floaterm_keymap_new    = '<F7>'
+let g:floaterm_keymap_prev   = '<F8>'
+let g:floaterm_keymap_next   = '<F9>'
+let g:floaterm_keymap_toggle = '<F10>'
+"}}}
+"{{{
+nmap  -  <Plug>(choosewin)
 "}}}
