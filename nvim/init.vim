@@ -1,4 +1,6 @@
 " map"{{{
+let g:ProjectDir = fnamemodify(finddir('.git','.;'),':p:h:h') 
+
 let mapleader = " "
 nnoremap <leader>p 1<C-G>
 nnoremap <F4> :g/^\s*$/d<CR> 
@@ -7,9 +9,10 @@ nnoremap <leader>a 0
 vnoremap <leader>e $
 vnoremap <leader>a 0
 
+
 nnoremap <leader>i :set ic<CR>
 nnoremap <leader>I :set noic<CR>
-
+omapclear
 nmap <leader><leader>y "+y
 nmap <leader><leader>p "+p
 nmap <leader>r :source ~/.config/nvim/init.vim<CR> :AirlineRefresh<CR>
@@ -22,26 +25,25 @@ inoremap jk <Esc>
 
 nnoremap <leader>g %
 
-inoremap {} {}<Esc>i
-inoremap () ()<Esc>i
-inoremap [] []<Esc>i
-inoremap <> <><Esc>i
-inoremap "" ""<Esc>i
-inoremap '' ''<Esc>i
+"inoremap {} {}<Esc>i
+"inoremap () ()<Esc>i
+"inoremap [] []<Esc>i
+"inoremap <> <><Esc>i
+"inoremap "" ""<Esc>i
+"inoremap '' ''<Esc>i
 
 set pastetoggle=<F5>
-
 
 noremap <LEADER><CR> :nohlsearch<CR>
 
 " Disable the default s key
-noremap s <nop>
+"noremap s <nop>
 
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-noremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
-noremap sj :set splitbelow<CR>:split<CR>
-noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
-noremap sl :set splitright<CR>:vsplit<CR>
+noremap <silent> <leader>sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+noremap <silent> <leader>sj :set splitbelow<CR>:split<CR>
+noremap <silent> <leader>sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+noremap <silent> <leader>sl :set splitright<CR>:vsplit<CR>
 
 
 noremap <leader>w <C-w>w
@@ -66,6 +68,11 @@ map <M-right> :vertical resize+5<CR>
 source ~/.config/nvim/Ultisnips/md-snippets.vim
 " auto spell
 " }}}
+"{{{ vimwiki
+let g:vimwiki_text_ignore_newline = 0
+let g:vimwiki_list_ignore_newline = 0
+nnoremap F3 : VimwikiAll2HTML<cr>
+"}}}
 
 " Set""{{{
 syntax on                      "set syntax highlight
@@ -97,20 +104,20 @@ set confirm                    "If you do something vim will ask for you Y/N
 set pastetoggle=<f7>           "set paste toggle mode
 set cmdheight=1                "CmdLine is following one line of StatusLine
 set scrolloff=4                "If cursor achive bottom ,it will keep '4' lines with StatusLine
-set noexpandtab                "No use space replace Tab
-set ts=4
+
 set hidden					   "about undo
 "=============================Backup
 set backup
 set backupext=.bak
 set backupdir=~/.config/nvim/.bakup 
 "=============================Indent
-set autoindent
-set cindent
-set smartindent                 "set C files auto indent
-set softtabstop=4
-set tabstop=4
-set shiftwidth=4                "set tab width""""
+"set cindent
+set smartindent
+"set expandtab
+set ts=4
+set listchars=tab:>>
+
+autocmd FileType c,cpp set shiftwidth=2 | set expandtab
 
 "=============================Encode
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
@@ -143,7 +150,7 @@ Plug 'wannesm/wmgraphviz.vim'
 Plug 'bling/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-ctrlspace/vim-ctrlspace'
+"Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'junegunn/fzf.vim'
 "Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
@@ -188,6 +195,9 @@ Plug 'MattesGroeger/vim-bookmarks'
 "autoformat"
 Plug 'Chiel92/vim-autoformat'
 
+Plug 'Raimondi/delimitMate'
+Plug 't9md/vim-choosewin'
+Plug 'voldikss/vim-floaterm'
 
 "Plug 'yianwillis/vimcdoc'
 "PlugInstall 	Install plugins
@@ -216,7 +226,7 @@ let g:airline_theme="gruvbox"
 let g:airline_symbols_ascii=1
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#ctrlspace#enabled = 1
-let g:airline#extensions#coc#enabled =0
+let g:airline#extensions#coc#enabled =1
 let g:CtrlSpaceStatuslineFunction = "airline#extensions#ctrlspace#statusline()"
 let g:airline#extensions#branch#enabled = 0
 let g:airline_section_c = airline#section#create(['readonly',' ','%{getcwd()}/%t'])
@@ -226,8 +236,8 @@ let g:airline_section_z = airline#section#create (['%l',',','%L' , '%3v'])
 "let g:airline#extensions#branch#displayed_head_limit = 10
 "let g:airline#extensions#branch#format = 2
 
-
 "}}}
+"
 
 "nerdtree"{{{
 "nmap <leader><leader>nt :NERDTreeToggle<CR>
@@ -265,19 +275,16 @@ nmap <Leader>lv :w<CR>:GraphvizShow<CR>:!rm %<.svg
 " fzf{{{
 "<Leader>f在当前目录搜索文件
 nnoremap <silent><Leader>f :Files<CR>
-"<Leader>b切换Buffer中的文件
-"nnoremap <silent><Leader>b :Buffers<CR>
-""<Leader>p在当前所有加载的Buffer中搜索包含目标词的所有行，:BLines只在当前Buffer中搜索
-"nnoremap <silent><Leader>l :Lines<CR>
-""<Leader>h在Vim打开的历史文件中搜索，相当于是在MRU中搜索，:History：命令历史查找
-"nnoremap <silent><Leader>h :History<CR>
-"调用Rg进行搜索，包含隐藏文件
+
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \ 'rg --column --line-number --no-heading --color=always -g "!cscope.*" --smart-case '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+command! -bang ProjectFiles call fzf#vim#files(fnamemodify(finddir('.git','.;'),':p:h:h'), <bang>0)
+nnoremap <silent><Leader>fp :ProjectFiles<CR>
 
 let g:fzf_layout = { 'down': '~40%' }
 
@@ -362,23 +369,22 @@ let g:undotree_ShortIndicators = 1
 " {{{ vim-easymotion
 let g:EasyMotion_smartcase = 1
 " 'f{char} to move to {char}
-map f <Plug>(easymotion-bd-f)
-nmap f <Plug>(easymotion-overwin-f)
-"}}}
-"inoremap <M-e> <nop>
-"  Ultisnips{{{
-let g:UltiSnipsExpandTrigger="<TAB>"
-let g:UltiSnipsJumpForwardTrigger="<TAB>"
-let g:UltiSnipsJumpBackwardTrigger="<S-TAB>"
-let g:UltiSnipsSnippetDirectories = [$HOME."/.config/nvim/Ultisnips/" ]
 
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
-" Solve extreme insert-mode lag on macOS (by disabling autotrigger)
-augroup ultisnips_no_auto_expansion
-    au!
-    au VimEnter * au! UltiSnips_AutoTrigger
-augroup END
+
+nmap w <Plug>(easymotion-bd-wl)
+nmap f <Plug>(easymotion-bd-f2)
+
+
+
 "}}}
+"  Ultisnips{{{
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/']
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
+""}}}
+"
 "  MarkdownPreview {{{
 imap  <silent> <F8> <Plug>:MarkdownPreview<CR>
 nmap  <silent> <F8> <Plug>MarkdownPreview<CR>
@@ -403,10 +409,6 @@ let g:mkdp_markdown_css = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
-"}}}
-"Ctrlspace{{{
-let g:CtrlSpaceDefaultMappingKey = "<leader>c"
-let g:CtrlSpaceUseUnicode = 0
 "}}}
 
 "{{{##### auto fcitx  ###########
@@ -455,6 +457,7 @@ nmap <leader><leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
 nmap <leader><leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 nmap <leader><leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
 
+
 if cscope_connection()==0
 	if has("cscope")
 		set csprg=/usr/bin/cscope
@@ -485,7 +488,19 @@ set shortmess+=c
 "" diagnostics appear/become resolved.
 ""set signcolumn=yes
 
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-gitignore', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter', 'coc-todolist']
+let g:coc_global_extensions = [
+			\'coc-python'
+			\, 'coc-vimlsp'
+			\, 'coc-json'
+			\, 'coc-yank'
+			\, 'coc-gitignore'
+			\, 'coc-lists'
+			\, 'coc-git'
+			\, 'coc-explorer'
+			\, 'coc-pyright'
+			\, 'coc-translator'
+			\, 'coc-todolist'
+			\]
 
 inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
@@ -515,10 +530,27 @@ nmap ts <Plug>(coc-translator-p)
 
 nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<cr>
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> ge <Plug>(coc-declaration)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
+
+" coctodolist
+nnoremap <leader>tn :CocCommand todolist.create<CR>
+nnoremap <leader>tl :CocList todolist<CR>
+nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload<CR>
+" coc-tasks
+noremap <silent> T :CocList tasks<CR>
+
+nnoremap <silent><leader>cl   :CocList<CR>
+nnoremap <silent><leader>cc   :CocList commands<CR>
+nnoremap <silent><leader>cd   :CocList diagnostics<CR>
+nnoremap <silent><leader>ce   :CocList extensions<CR>
+nnoremap <silent><leader>co   :CocList outline<CR>
+nnoremap <silent><leader>cs   :CocList symbols<CR>
+nnoremap <silent><leader>cf   :CocList files<CR>
+nnoremap <silent><leader>cr   :CocListResume<CR>
 "}}}
 "
 "{{{ multiple cursors
@@ -534,4 +566,30 @@ let g:multi_cursor_quit_key            = '<Esc>'
 "}}}
 "{{{ autoformat"
 let g:formatterpath = [ '/usr/sbin' ]
+"}}}
+"delimitMate{{{
+let delimitMate_matchpairs = "(:),[:],{:}"
+au FileType vim,c let b:delimitMate_matchpairs = "(:),[:],{:}"
+let delimitMate_expand_space = 1
+let delimitMate_expand_cr = 1
+"}}}
+"custom function{{{
+
+"change to project dir
+nmap <F2> :call ChangeToPrjDir()<cr>
+function! ChangeToPrjDir()
+	let dir = g:ProjectDir
+	execute ":cd  " .dir
+endfunction
+
+
+"}}}
+"{{{ floaterm
+let g:floaterm_keymap_new    = '<F7>'
+let g:floaterm_keymap_prev   = '<F8>'
+let g:floaterm_keymap_next   = '<F9>'
+let g:floaterm_keymap_toggle = '<F10>'
+"}}}
+"{{{
+nmap  -  <Plug>(choosewin)
 "}}}

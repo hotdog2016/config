@@ -51,6 +51,7 @@
 //	"diagnostic.virtualTextPrefix": " ❯❯❯ ",
 //	"diagnostic.virtualText": true,
 	"codeLens.enable": false,
+	"list.source.symbols.defaultOptions": ["--interactive", "--number-select"],
 	"signature.target": "float",
 	"yank.enableCompletion" : false,
 	"explorer.width": 38,
@@ -152,7 +153,6 @@
 	"git.changeRemovedSign.text": "▒",
 	"git.enableGlobalStatus": false,
 	"git.signOffset": 2,
-	"tslint.autoFixOnSave": true,
 	"python.autoComplete.addBrackets": true,
 	"python.jediEnabled": false,
 	"python.formatting.provider": "yapf",
@@ -161,13 +161,21 @@
         "{SPACES_AROUND_POWER_OPERATOR: True, SPACES_BEFORE_COMMENT: 1}"
     ],
 	"languageserver":{
+		"bash": {
+			"command": "bash-language-server",
+			"args": ["start"],
+			"filetypes": ["sh"],
+			"ignoredRootPaths": []
+		},
 		"ccls": {
 			"command": "ccls",
-			"filetypes": ["c", "cpp", "objc", "objcpp"],
-			"trace.server": "verbose",
+			"filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+			"rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
 			"initializationOptions": {
-				"cacheDirectory": "/tmp/ccls"
-			}
+				 "cache": {
+					 "directory": "/tmp/ccls"
+				 }
+			 }
 		}
 	}
 }
