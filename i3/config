@@ -11,7 +11,7 @@
 set $mod Mod4
 exec xmodmap ~/.Xmodmap
 exec /usr/bin/vmware-user
-exec feh --bg-scale ~/wallpapers/2.jpg
+exec feh --bg-fill ~/wallpapers/1.jpg
 #ranger
 
 new_window pixel 1 

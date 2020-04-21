@@ -1,5 +1,5 @@
+
 " map"{{{
-let g:ProjectDir = fnamemodify(finddir('.git','.;'),':p:h:h') 
 
 let mapleader = " "
 nnoremap <leader>p 1<C-G>
@@ -575,11 +575,26 @@ let delimitMate_expand_cr = 1
 "}}}
 "custom function{{{
 
+"工程目录的设置，通过寻找.git目录来确定当前工程的根目录。
+"
+"找寻根目录主要是为了:
+"(1)在根目录上递归的向下查找某个文件，或者是某个文件中的
+"某个字符串。
+"(2)更新tags文件和cscope文件。
+let g:ProjectDir = fnamemodify(finddir('.git','.;'),':p:h:h') 
 "change to project dir
 nmap <F2> :call ChangeToPrjDir()<cr>
 function! ChangeToPrjDir()
 	let dir = g:ProjectDir
 	execute ":cd  " .dir
+endfunction
+"更新plug插件和Coc插件
+"
+nmap <F6> :call UpdatePluginandCoc()<cr>
+function! UpdatePluginandCoc()
+		execute "PlugUpgrade"
+		execute "PlugUpdate"
+		execute "CocUpdate"
 endfunction
 
 
@@ -593,3 +608,4 @@ let g:floaterm_keymap_toggle = '<F10>'
 "{{{
 nmap  -  <Plug>(choosewin)
 "}}}
+"
