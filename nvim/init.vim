@@ -524,7 +524,7 @@ function! s:check_back_space() abort
 endfunction
 
 nmap <leader>nt :CocCommand explorer<CR>
-
+nmap <leader>rn <Plug>(coc-rename)
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 
