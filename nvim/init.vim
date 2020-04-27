@@ -274,8 +274,8 @@ nmap <Leader>lv :w<CR>:GraphvizShow<CR>:!rm %<.svg
 
 " fzf{{{
 "<Leader>f在当前目录搜索文件
+"
 nnoremap <silent><Leader>f :Files<CR>
-
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \ 'rg --column --line-number --no-heading --color=always -g "!cscope.*" --smart-case '.shellescape(<q-args>), 1,
@@ -447,15 +447,15 @@ autocmd InsertLeave * call Fcitx2en()
 "<leader><leader>s: Find this C symbol
 "<leader><leader>t: Find this text string
 
-nmap <leader><leader>s :cs find s <C-R>=expand("<cword>")<CR><CR> 
-nmap <leader><leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <leader><leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <leader><leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <leader><leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <leader><leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <leader><leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
-nmap <leader><leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-nmap <leader><leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gs :cs find s <C-R>=expand("<cword>")<CR><CR> 
+nmap <leader>gg :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gc :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gt :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>ge :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>gf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <leader>gi :cs find i <C-R>=expand("<cfile>")<CR><CR>
+nmap <leader>gd :cs find d <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>ga :cs find a <C-R>=expand("<cword>")<CR><CR>
 
 
 if cscope_connection()==0
@@ -528,7 +528,6 @@ nmap <leader>rn <Plug>(coc-rename)
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 
-nnoremap <silent> <leader>y :<C-u>CocList -A --normal yank<cr>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> ge <Plug>(coc-declaration)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -541,16 +540,19 @@ nnoremap <leader>tn :CocCommand todolist.create<CR>
 nnoremap <leader>tl :CocList todolist<CR>
 nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload<CR>
 " coc-tasks
+"
 noremap <silent> T :CocList tasks<CR>
+nnoremap <silent><leader>cl :CocList<CR>
+nnoremap <silent><leader>cr :CocListResume<CR>
+nnoremap <silent><leader>cb :CocList buffers<CR>
+nnoremap <silent><leader>cc :CocList commands<CR>
+nnoremap <silent><leader>cd :CocList diagnostics<CR>
+nnoremap <silent><leader>ce :CocList extensions<CR>
+nnoremap <silent><leader>co :CocList outline<CR>
+nnoremap <silent><leader>cs :CocList symbols<CR>
+nnoremap <silent><leader>cf :CocList files<CR>
+nnoremap <silent><leader>cy :<C-u>CocList -A --normal yank<cr>
 
-nnoremap <silent><leader>cl   :CocList<CR>
-nnoremap <silent><leader>cc   :CocList commands<CR>
-nnoremap <silent><leader>cd   :CocList diagnostics<CR>
-nnoremap <silent><leader>ce   :CocList extensions<CR>
-nnoremap <silent><leader>co   :CocList outline<CR>
-nnoremap <silent><leader>cs   :CocList symbols<CR>
-nnoremap <silent><leader>cf   :CocList files<CR>
-nnoremap <silent><leader>cr   :CocListResume<CR>
 "}}}
 "
 "{{{ multiple cursors
