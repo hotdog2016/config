@@ -150,11 +150,7 @@ Plug 'wannesm/wmgraphviz.vim'
 Plug 'bling/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'junegunn/fzf.vim'
-"Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
-
 Plug 'vimwiki/vimwiki'
 
 "colorschem
@@ -252,19 +248,6 @@ let g:airline_section_z = airline#section#create (['%l',',','%L' , '%3v'])
 "}}}
 "
 
-"nerdtree"{{{
-"nmap <leader><leader>nt :NERDTreeToggle<CR>
-"let NERDChristmasTree=1
-"let NERDTreeWinSize=30
-"let NERDTreeChDirMode=2
-"let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
-"let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
-"let NERDTreeShowBookmarks=1
-"let NERDTreeAutoDeleteBuffer=1
-"let NERDTreeDirArrowExpandable=">"
-"let NERDTreeDirArrowCollapsible="v"
-"let NERDTreeWinPos = "left"
-"}}}
 
 "wmgrahviz"{{{
 function! Headerdot()
@@ -285,70 +268,6 @@ nmap <F9> :w<CR>:!dot -Tpdf -o %<.pdf %<CR>
 nmap <Leader>lv :w<CR>:GraphvizShow<CR>:!rm %<.svg
 "}}}
 
-" fzf{{{
-"<Leader>f在当前目录搜索文件
-"
-"nnoremap <silent><Leader>f :Files<CR>
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \ 'rg --column --line-number --no-heading --color=always -g "!cscope.*" --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
-
-command! -bang ProjectFiles call fzf#vim#files(fnamemodify(finddir('.git','.;'),':p:h:h'), <bang>0)
-nnoremap <silent><Leader>fp :ProjectFiles<CR>
-
-let g:fzf_layout = { 'down': '~40%' }
-
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-" [Buffers] 如果可能跳到已存在窗口
-let g:fzf_buffers_jump = 1
-" [[B]Commits] 自定义被'git log'使用的选项
-let g:fzf_commits_log_options = 
-            \'--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-" [Tags] 定义用来产生tag的命令
-let g:fzf_tags_command = 'ctags -R'
-" [Commands] --expect expression for directly executing the command
-let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-"========}}}
-
-" YouCompleteMe"{{{
-"let g:ycm_python_binary_path  = '/usr/bin/python3.7'
-"let g:ycm_use_clangd = 0
-"let g:ycm_auto_trigger = 0
-"let g:ycm_key_invoke_completion = '<C-n>'
-"let g:ycm_server_keep_logfiles = 1
-"let g:ycm_collect_identifiers_from_tags_files=1
-"let g:ycm_server_log_level = 'debug'
-"let g:ycm_confirm_extra_conf = 0
-"let g:ycm_global_ycm_extra_conf = '~/' 
-"let g:ycm_collect_identifiers_from_tag_files = 1  
-"let g:ycm_min_num_of_chars_for_completion=4
-"let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
-"let g:ycm_complete_in_comments = 1  "在注释输入中也能补全
-"let g:ycm_complete_in_strings = 1   "在字符串输入中也能补全
-"let g:ycm_use_ultisnips_completer = 1 "提示UltiSnips
-"let g:ycm_cache_omnifunc = 0        " 禁止缓存匹配项,每次都重新生成匹配项
-""注释和字符串中的文字也会被收入补全
-"let g:ycm_collect_identifiers_from_comments_and_strings = 0   
-"let g:ycm_seed_identifiers_with_syntax = 0
-"let g:ycm_enable_diagnostic_signs = 0
-"let g:ycm_enable_diagnostic_highlighting = 0
-"let g:ycm_error_symbol = '>>'
-"let g:ycm_warning_symbol = '>*'
-"let g:ycm_add_preview_to_completeopt = 0
-"let g:ycm_semantic_triggers =  {
-"  \   'c' : ['->', '.'],
-"  \   'cpp,objcpp' : ['->', '.', '::'],
-"  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-"  \ }
-""""}}}
 
 " Vista.vim{{{
 noremap <leader>v :Vista!!<CR>
@@ -656,7 +575,7 @@ noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 "}}}
 "
 ""{{{ leaderf
-let g:Lf_ShortcutF = '<c-P>'
+let g:Lf_ShortcutF = '<leader>f'
 let g:Lf_ShortcutB = '<m-n>'
 
 noremap <c-n> :LeaderfMru<cr>
