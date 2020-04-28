@@ -151,6 +151,7 @@ Plug 'bling/vim-airline'
 Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
+
 Plug 'vimwiki/vimwiki'
 
 "colorschem
@@ -280,10 +281,6 @@ set statusline+=%{NearestMethodOrFunction()}
 " e.g., more compact: ["▸ ", ""]
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista#renderer#enable_icon = 0
-"let g:vista_default_executive = 'ctags'
-" To enable fzf's preview window set g:vista_fzf_preview.
-" The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
-" For example:
 let g:vista_fzf_preview = ['right:50%']
 """}}}
 
@@ -575,12 +572,13 @@ noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 "}}}
 "
 ""{{{ leaderf
-let g:Lf_ShortcutF = '<leader>f'
-let g:Lf_ShortcutB = '<m-n>'
+let g:Lf_ShortcutF = '<leader>ff'
+let g:Lf_ShortcutB = '<leader>fb'
 
-noremap <c-n> :LeaderfMru<cr>
-noremap <m-p> :LeaderfFunction<cr>
-noremap <m-m> :LeaderfTag<cr>
+noremap <leader>fm :LeaderfMru<cr>
+noremap <leader>fF :LeaderfFunction<cr>
+noremap <leader>ft :LeaderfTag<cr>
+noremap <leader>fs :LeaderF rg<cr>
 
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
@@ -593,6 +591,8 @@ let g:Lf_HideHelp = 1
 let g:Lf_StlColorscheme = 'powerline'
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
+noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg -e %s ", expand("<cword>"))<CR>
+xnoremap <leader>fv :<C-U><C-R>=printf("Leaderf rg -F -e %s ", leaderf#Rg#visual())<CR>
 
 "" don't show the help in normal mode
 "let g:Lf_HideHelp = 1
@@ -605,7 +605,6 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
 "let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
 "
-"let g:Lf_ShortcutF = "<leader>f"
 "
 "noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
 "noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
@@ -613,10 +612,8 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 "
 "noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
-"noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
 "
 "" search visually selected text literally
-"xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
 "noremap go :<C-U>Leaderf! rg --recall<CR>
 "
 "" should use `Leaderf gtags --update` first
@@ -629,11 +626,6 @@ let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 "        \ 'dir': ['.git'],
 "        \ 'file': []
 "        \}
-"noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-"noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-"noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
-"noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
-"noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 
 
 "}}}
