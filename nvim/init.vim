@@ -352,13 +352,13 @@ nnoremap <silent><leader>cy :<C-u>CocList -A --normal yank<cr>
 "
 "{{{ multiple cursors
 let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_word_key      = '<C-f>'
-let g:multi_cursor_select_all_word_key = '<A-n>'
-let g:multi_cursor_start_key           = 'g<C-f>'
-let g:multi_cursor_select_all_key      = 'g<A-n>'
-let g:multi_cursor_next_key            = '<C-f>'
-let g:multi_cursor_prev_key            = '<C-b>'
-let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_start_word_key      = '<m-f>'
+let g:multi_cursor_select_all_word_key = '<m-n>'
+let g:multi_cursor_start_key           = 'g<m-f>'
+let g:multi_cursor_select_all_key      = 'g<m-n>'
+let g:multi_cursor_next_key            = '<m-f>'
+let g:multi_cursor_prev_key            = '<m-b>'
+let g:multi_cursor_skip_key            = '<m-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 "}}}
 "{{{ autoformat"
