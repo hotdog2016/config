@@ -8,7 +8,6 @@ vnoremap <leader>e $
 vnoremap <leader>a 0
 nnoremap <leader>i :set ic<CR>
 nnoremap <leader>I :set noic<CR>
-omapclear
 nmap <leader><leader>y "+y
 nmap <leader><leader>p "+p
 nmap <leader>r :source ~/.config/nvim/init.vim<CR> :AirlineRefresh<CR>
