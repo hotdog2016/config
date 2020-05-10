@@ -89,6 +89,7 @@ set backupdir=~/.config/nvim/.bakup
 "=============================Indent
 set smartindent
 set ts=4
+set shiftwidth=4
 set listchars=tab:>>
 autocmd FileType c,cpp set shiftwidth=2 | set expandtab
 "=============================Encode
@@ -446,10 +447,17 @@ let g:gutentags_define_advanced_commands = 1
 let g:Lf_ShortcutF = '<leader>ff'
 let g:Lf_ShortcutB = '<leader>fb'
 let g:Lf_GtagsAutoGenerate = 1
+let g:Lf_DefaultExternalTool = "rg"
 noremap <leader>fm :LeaderfMru<cr>
 noremap <leader>fF :LeaderfFunction<cr>
 noremap <leader>ft :LeaderfTag<cr>
-noremap <leader>fs :LeaderF rg<cr>
+noremap <leader>fg :Leaderf rg<cr>
+let g:Lf_RgConfig = [
+    \ "--max-columns=150",
+    \ "--glob=!*List*"
+    \ "--glob=!Obj"
+    \ "--glob=!*.ew*"
+\ ]
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
@@ -459,12 +467,12 @@ let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp = 1
 let g:Lf_StlColorscheme = 'gruvbox'
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+let g:Lf_Gtagslabel = 'native-pygments'
 noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg -e %s ", expand("<cword>"))<CR>
 xnoremap <leader>fv :<C-U><C-R>=printf("Leaderf rg -F -e %s ", leaderf#Rg#visual())<CR>
-let g:Lf_Gtagslabel = 'native-pygments'
-noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+noremap <leader>fr :<C-U><C-R>=printf("Leaderf gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fd :<C-U><C-R>=printf("Leaderf gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fo :<C-U><C-R>=printf("Leaderf gtags --recall %s", "")<CR><CR>
 noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
 noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 "}}}
@@ -477,11 +485,22 @@ let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:airline#extensions#ale#enabled = 1
-let g:ale_linters =  {'c':['clang'],
-				     \'cpp':['clang']
+let g:ale_linters =  {'c':['ccls'],
+					 \'zsh': ['shell'],
+				     \'cpp':['ccls']
 					 \}
 let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
 let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_gcc_autoinclude_source_dir = 1
+let g:ale_c_ccls_executable = 'ccls'
+let g:ale_c_ccls_init_options = {
+    \   'cacheDirectory': '/tmp/ccls',
+    \   'cacheFormat': 'binary',
+    \   'diagnostics': {
+    \     'onOpen': 0,
+    \     'opChange': 1000,
+    \   },
+    \ }
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 "}}}

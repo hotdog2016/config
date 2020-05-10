@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =9
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/home/htodog/workspace/stm32/node_new/.ccls-cache'
 let g:netrw_dirhist_9='/home/htodog/workspace/C/student'
 let g:netrw_dirhist_8='/home/htodog/workspace/C/bishi/30'
 let g:netrw_dirhist_7='/home/htodog/workspace/C/bishi/26'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_4='/home/htodog/.vim/plugged/vim-airline'
 let g:netrw_dirhist_3='/home/htodog/workspace/tool/scripts/dwmbar-functions'
 let g:netrw_dirhist_2='/home/htodog/.config'
 let g:netrw_dirhist_1='/home/htodog/workspace/tool/dwm-6.2/patchs'
-let g:netrw_dirhist_0='/etc/zsh'

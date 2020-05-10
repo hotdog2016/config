@@ -170,6 +170,7 @@
 		},
 		"ccls": {
 			"command": "ccls",
+			"args": ["-log-file=/tmp/ccls.log","-v=1"],
 			"filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
 			"rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
 			"initializationOptions": {
