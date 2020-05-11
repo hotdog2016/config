@@ -1,7 +1,6 @@
 " map"{{{
 let mapleader = " "
 nnoremap <leader>p 1<C-G>
-nnoremap <F4> :g/^\s*$/d<CR> 
 nnoremap <leader>e $
 nnoremap <leader>a 0
 vnoremap <leader>e $
@@ -11,6 +10,8 @@ nnoremap <leader>I :set noic<CR>
 nmap <leader><leader>y "+y
 nmap <leader><leader>p "+p
 nmap <leader>r :source ~/.config/nvim/init.vim<CR> :AirlineRefresh<CR>
+
+noremap <F4> :vs  ~/.config/nvim/init.vim<CR>
 nmap     W   :wa<CR>
 nmap     Q  :qa<CR>
 nmap <leader>b :bd<CR>
@@ -37,6 +38,7 @@ noremap <leader>k <C-w>k
 noremap <leader>j <C-w>j
 noremap <leader>h <C-w>h
 noremap <leader>l <C-w>l
+noremap <leader><leader>q :cclose<CR>
 map <M-j> 5j
 map <M-k> 5k
 map <M-h> 5h
@@ -158,6 +160,8 @@ Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-scripts/a.vim'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
 
 "Plug 'yianwillis/vimcdoc'
 "
@@ -386,6 +390,7 @@ nmap <F2> :call ChangeToPrjDir()<cr>
 function! ChangeToPrjDir()
 	let dir = g:ProjectDir
 	execute ":cd  " .dir
+	execute ":!rsync.sh ".dir
 endfunction
 "更新plug插件和Coc插件
 "
@@ -454,8 +459,8 @@ noremap <leader>ft :LeaderfTag<cr>
 noremap <leader>fg :Leaderf rg<cr>
 let g:Lf_RgConfig = [
     \ "--max-columns=150",
-    \ "--glob=!*List*"
-    \ "--glob=!Obj"
+    \ "--glob=!*List*",
+    \ "--glob=!Obj",
     \ "--glob=!*.ew*"
 \ ]
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
@@ -503,4 +508,12 @@ let g:ale_c_ccls_init_options = {
     \ }
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
+noremap <leader>d :ALEDisable<CR>
 "}}}
+"{{{ ranger vim
+let g:ranger_map_keys = 0
+map <leader><leader>f :Ranger<CR>
+let g:ranger_replace_netrw = 1
+let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
+"}}}
+"

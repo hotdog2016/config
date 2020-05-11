@@ -14,6 +14,8 @@ exec /usr/bin/vmware-user
 exec feh --bg-fill ~/wallpapers/CMYK_1.png
 #ranger
 
+bindsym $mod+m exec urxvt -e ranger 
+
 new_window pixel 1 
 new_float normal
 #
@@ -69,7 +71,7 @@ bindsym $mod+minus scratchpad show
 # installed.
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-bindsym $mod+m exec --no-startup-id ranger
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
