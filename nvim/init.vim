@@ -1,23 +1,20 @@
 " map"{{{
 let mapleader = " "
-nnoremap <leader>p 1<C-G>
-nnoremap <leader>e $
-nnoremap <leader>a 0
-vnoremap <leader>e $
-vnoremap <leader>a 0
-nnoremap <leader>i :set ic<CR>
+nnoremap <M-e> $
+nnoremap <M-a> 0
+vnoremap <M-e> $
+vnoremap <M-a> 0
 nnoremap <leader>I :set noic<CR>
-nmap <leader><leader>y "+y
-nmap <leader><leader>p "+p
+nmap <leader>y "+y
+nmap <leader>p "+p
 nmap <leader>r :source ~/.config/nvim/init.vim<CR> :AirlineRefresh<CR>
-
 noremap <F4> :vs  ~/.config/nvim/init.vim<CR>
-nmap     W   :wa<CR>
+nmap     W   :wa<CR> :e<cr>
 nmap     Q  :qa<CR>
-nmap <leader>b :bd<CR>
-nmap <leader>q :close<CR>
-inoremap jk <Esc>
-nnoremap <leader>g %
+nmap <silent><leader>qb :bd<CR>
+nmap <leader>qw :close<CR>
+noremap <leader>qq :cclose<CR>
+
 "inoremap {} {}<Esc>i
 "inoremap () ()<Esc>i
 "inoremap [] []<Esc>i
@@ -38,7 +35,8 @@ noremap <leader>k <C-w>k
 noremap <leader>j <C-w>j
 noremap <leader>h <C-w>h
 noremap <leader>l <C-w>l
-noremap <leader><leader>q :cclose<CR>
+
+
 map <M-j> 5j
 map <M-k> 5k
 map <M-h> 5h
@@ -56,6 +54,9 @@ source ~/.config/nvim/Ultisnips/md-snippets.vim
 "{{{ vimwiki
 let g:vimwiki_text_ignore_newline = 0
 let g:vimwiki_list_ignore_newline = 0
+let g:vimwiki_html_header_numbering = 2
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+			\'path_html':'~/vimwiki/vimwiki_html/'}]
 nnoremap F3 : VimwikiAll2HTML<cr>
 "}}}
 " Set""{{{
@@ -64,6 +65,8 @@ filetype on                    "Enable filetype check
 filetype plugin on             "auto chose plugins
 filetype indent on             "auto chose indent
 autocmd BufRead,BufNewFile *.md setlocal spell
+
+set autochdir
 set cursorline
 set nu
 set relativenumber
@@ -80,7 +83,6 @@ set clipboard+=unnamedplus      "clipboard
 set hlsearch                   "set search string highlight
 set nocompatible               "close compatible mode
 set confirm                    "If you do something vim will ask for you Y/N 
-set pastetoggle=<f7>           "set paste toggle mode
 set cmdheight=1                "CmdLine is following one line of StatusLine
 set scrolloff=4                "If cursor achive bottom ,it will keep '4' lines with StatusLine
 set hidden					   "about undo
@@ -151,7 +153,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 Plug 'Chiel92/vim-autoformat'
 Plug 'Raimondi/delimitMate'
 Plug 't9md/vim-choosewin'
-Plug 'voldikss/vim-floaterm'
+"Plug 'voldikss/vim-floaterm'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 Plug 'skywind3000/asynctasks.vim'
@@ -340,6 +342,7 @@ function! s:check_back_space() abort
 endfunction
 nmap <leader>nt :CocCommand explorer<CR>
 nmap <leader>rn <Plug>(coc-rename)
+
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 " coctodolist
@@ -350,11 +353,11 @@ nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload
 "
 noremap <silent> T :CocList tasks<CR>
 nnoremap <silent><leader>cl :CocList<CR>
-nnoremap <silent><leader>cc :CocList commands<CR>
-nnoremap <silent><leader>ce :CocList extensions<CR>
 nnoremap <silent><leader>co :CocList outline<CR>
 nnoremap <silent><leader>cs :CocList symbols<CR>
 nnoremap <silent><leader>cy :<C-u>CocList -A --normal yank<cr>
+nnoremap <silent><leader>ss :CocCommand session.save<cr>
+nnoremap <silent><leader>sl :CocList sessions<cr>
 "}}}
 "
 "{{{ multiple cursors
@@ -432,6 +435,9 @@ if executable('gtags-cscope') && executable('gtags')
 endif
 let s:vim_tags = expand('~/.cache/tags')
 let g:gutentags_cache_dir = s:vim_tags
+let g:gutentags_ctags_exclude_wildignore = 1
+let g:gutentags_ctags_exclude = ['*ccls-cache*']
+
 " 检测 ~/.cache/tags 不存在就新建
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
@@ -453,6 +459,11 @@ let g:Lf_ShortcutF = '<leader>ff'
 let g:Lf_ShortcutB = '<leader>fb'
 let g:Lf_GtagsAutoGenerate = 1
 let g:Lf_DefaultExternalTool = "rg"
+
+let g:Lf_WildIgnore = {
+            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.ccls-cache'],
+            \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
+            \}
 noremap <leader>fm :LeaderfMru<cr>
 noremap <leader>fF :LeaderfFunction<cr>
 noremap <leader>ft :LeaderfTag<cr>
