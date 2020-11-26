@@ -121,6 +121,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'vimwiki/vimwiki'
+"wildfire
+Plug 'gcmt/wildfire.vim'
 "colorschem
 Plug 'taniarascia/new-moon.vim'
 Plug 'altercation/vim-colors-solarized'
@@ -145,7 +147,8 @@ Plug 'mhinz/vim-startify'
 "coc"
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "multiple cursors"
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+"Plug 'terryma/vim-multiple-cursors'
 "surround"
 Plug 'tpope/vim-surround'
 Plug 'MattesGroeger/vim-bookmarks'
@@ -184,7 +187,9 @@ colorscheme gruvbox
 let g:table_mode_corner='+'
 nnoremap <leader>tm : TableModeToggle<CR>
 "}}}
-"
+"{{{wildfire
+let g:wildfire_objects = ["i'", 'i"', "i)", "i]", "i}", "ip", "it"]
+"}}}
 "air-line"{{{
 let g:airline_theme="gruvbox" 
 let g:airline_symbols_ascii=1
@@ -197,7 +202,6 @@ let g:airline_section_c = airline#section#create(['readonly',' ','%{getcwd()}/%t
 let g:airline_section_y = airline#section#create([''])
 let g:airline_section_z = airline#section#create (['%l',',','%L' , '%3v'])
 "}}}
-"
 "wmgrahviz"{{{
 function! Headerdot()
 		call setline(1,"//usr/bin/dot")
@@ -300,7 +304,6 @@ autocmd InsertLeave * call Fcitx2en()
 "进入插入模式
 "autocmd InsertEnter * call Fcitx2zh()
 "}}}##### auto fcitx end ######
-"
 "{{{ coc
 " Give more space for displaying messages.
 "set cmdheight=2
@@ -359,17 +362,7 @@ nnoremap <silent><leader>cy :<C-u>CocList -A --normal yank<cr>
 nnoremap <silent><leader>ss :CocCommand session.save<cr>
 nnoremap <silent><leader>sl :CocList sessions<cr>
 "}}}
-"
 "{{{ multiple cursors
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_word_key      = '<m-f>'
-let g:multi_cursor_select_all_word_key = '<m-n>'
-let g:multi_cursor_start_key           = 'g<m-f>'
-let g:multi_cursor_select_all_key      = 'g<m-n>'
-let g:multi_cursor_next_key            = '<m-f>'
-let g:multi_cursor_prev_key            = '<m-b>'
-let g:multi_cursor_skip_key            = '<m-x>'
-let g:multi_cursor_quit_key            = '<Esc>'
 "}}}
 "{{{ autoformat"
 let g:formatterpath = [ '/usr/sbin' ]
@@ -414,17 +407,21 @@ let g:floaterm_keymap_toggle = '<F10>'
 nmap  -  <Plug>(choosewin)
 "}}}
 "{{{ asynctasks
-let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
+let g:asyncrun_rootmarks = ['.git','.ccls']
 let g:asynctasks_term_pos = 'tab'
 let g:asyncrun_open = 6
 nnoremap <F11> :AsyncTask file-build<cr> 
 nnoremap <F12> :AsyncTask file-run<cr> 
 "}}}
-"{{{ gutentags
+"{{{gutentags
+"let g:gutentags_define_advanced_commands = 1
+"let g:gutentags_trace = 1
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let g:gutentags_project_root = ['.ccls','.root', '.svn', '.git', '.hg', '.project']
+
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
+
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 if executable('ctags')
@@ -433,31 +430,25 @@ endif
 if executable('gtags-cscope') && executable('gtags')
 	let g:gutentags_modules += ['gtags_cscope']
 endif
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
-let g:gutentags_ctags_exclude_wildignore = 1
-let g:gutentags_ctags_exclude = ['*ccls-cache*']
 
-" 检测 ~/.cache/tags 不存在就新建
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
 " 配置 ctags 的参数，老的 Exuberant-ctags 不能有 --extra=+q，注意
-"let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args = ['--fields=+niazS']
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
 " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
-"let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
 " 禁用 gutentags 自动加载 gtags 数据库的行为
 let g:gutentags_auto_add_gtags_cscope = 0
-let g:gutentags_define_advanced_commands = 1
-"}}}
+""}}}
 ""{{{ leaderf
+let g:Lf_GtagsAutoGenerate = 1
 let g:Lf_ShortcutF = '<leader>ff'
 let g:Lf_ShortcutB = '<leader>fb'
-let g:Lf_GtagsAutoGenerate = 1
 let g:Lf_DefaultExternalTool = "rg"
 
 let g:Lf_WildIgnore = {
@@ -475,10 +466,10 @@ let g:Lf_RgConfig = [
     \ "--glob=!*.ew*"
 \ ]
 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
-let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_RootMarkers = ['.ccls']
 let g:Lf_WorkingDirectoryMode = 'Ac'
 let g:Lf_WindowHeight = 0.30
-let g:Lf_CacheDirectory = expand('~/.vim/cache')
+let g:Lf_CacheDirectory = expand('~/.cache/tags')
 let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp = 1
 let g:Lf_StlColorscheme = 'gruvbox'
@@ -503,14 +494,17 @@ let g:ale_lint_on_insert_leave = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_linters =  {'c':['ccls'],
 					 \'zsh': ['shell'],
-				     \'cpp':['ccls']
+				     \'cpp':['ccls'],
 					 \}
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+"
+
+let g:ale_c_parse_makefile = 1
+"let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+"let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 let g:ale_c_gcc_autoinclude_source_dir = 1
 let g:ale_c_ccls_executable = 'ccls'
 let g:ale_c_ccls_init_options = {
-    \   'cacheDirectory': '/tmp/ccls',
+    \   'cacheDirectory': '.ccls-cache',
     \   'cacheFormat': 'binary',
     \   'diagnostics': {
     \     'onOpen': 0,
@@ -527,4 +521,3 @@ map <leader><leader>f :Ranger<CR>
 let g:ranger_replace_netrw = 1
 let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
 "}}}
-"
